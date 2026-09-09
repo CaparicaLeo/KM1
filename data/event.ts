@@ -133,13 +133,45 @@ export const event = {
 /** Endereço em uma linha — usado no hero, no rodapé e no JSON-LD. */
 export const fullAddress = `${event.location.venue} — ${event.location.street}, ${event.location.district}, ${event.location.city} - ${event.location.state}, ${event.location.postalCode}`;
 
+/** Domínio de produção, usado quando o ambiente não declara um. */
+const fallbackSiteUrl = "https://km1.thomeesantos.com.br";
+
 /**
- * Domínio de produção. Alimenta metadataBase, Open Graph, canonical, sitemap e
- * robots — um valor errado aqui propaga para todos de uma vez. Em preview,
- * defina NEXT_PUBLIC_SITE_URL (ver .env.example).
+ * Normaliza o que vier de NEXT_PUBLIC_SITE_URL.
+ *
+ * O `??` sozinho não dava conta: variável declarada na Vercel sem valor chega
+ * como string VAZIA, e "" não é null nem undefined — o build de produção morria
+ * em `new URL("")` (`ERR_INVALID_URL`) ao coletar /_not-found, enquanto local,
+ * sem a variável, passava. Daí a checagem por conteúdo, e não por existência.
+ *
+ * Também aceita host sem protocolo (é a forma como `$VERCEL_URL` chega) e tira
+ * a barra final, para canonical, sitemap e OG não divergirem por um "/".
+ *
+ * Valor irrecuperável cai no domínio de produção em vez de derrubar o build:
+ * um canonical errado se conserta com rebuild, um deploy que não sobe, não.
  */
-export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://km1.thomeesantos.com.br";
+function resolveSiteUrl(value: string | undefined) {
+  const raw = value?.trim();
+  if (!raw) return fallbackSiteUrl;
+
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+  try {
+    const url = new URL(withProtocol);
+    // `pathname` preservado (permite o site num subcaminho), sem a barra final;
+    // query e hash não fazem sentido num domínio base e ficam de fora.
+    return `${url.origin}${url.pathname.replace(/\/+$/, "")}`;
+  } catch {
+    return fallbackSiteUrl;
+  }
+}
+
+/**
+ * Domínio público do site. Alimenta metadataBase, Open Graph, canonical,
+ * sitemap e robots — um valor errado aqui propaga para todos de uma vez. Em
+ * preview, defina NEXT_PUBLIC_SITE_URL (ver .env.example).
+ */
+export const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 /**
  * Descrição canônica: alimenta metadata, Open Graph e JSON-LD. Sem data, pelo
