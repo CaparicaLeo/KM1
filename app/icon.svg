@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="KM1">
+  <!--
+    Favicon: chapa preta com a marca em amarelo, e não arte transparente.
+    Navegador não aplica prefers-color-scheme a favicon, então marca sem chapa
+    some na barra escura. Os hexes acompanham app/theme.ts; se a paleta mudar,
+    este arquivo precisa mudar junto (SVG estático não lê custom property).
+    O "1" é desenhado como retângulos: qualquer <text> dependeria de fonte do
+    sistema e sairia diferente em cada máquina.
+  -->
+  <rect width="64" height="64" fill="#0D0D0D"/>
+  <rect x="10" y="14" width="8" height="36" fill="#F5D700"/>
+  <rect x="24" y="14" width="30" height="8" fill="#F5D700"/>
+  <rect x="40" y="14" width="8" height="36" fill="#F5D700"/>
+</svg>
