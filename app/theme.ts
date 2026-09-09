@@ -18,11 +18,12 @@ export const theme = {
     /** Um degrau abaixo, para separar blocos sem desenhar borda. */
     backgroundAlt: "#000000",
     /**
-     * Amarelo de marca. O logo do KM1 (public/images/km1-logo.png) é lettering
-     * amarelo #FFD802 sobre transparência — medido no próprio PNG. A diferença
-     * para o token do deck é de ~2° de matiz e não aparece lado a lado; o valor
-     * do deck continua sendo a verdade da identidade. Se um dia o logo vetorial
-     * chegar, reconfira os dois.
+     * Amarelo de marca. As artes prontas trazem tons próprios, medidos nos
+     * arquivos: o logo (public/images/km1-logo.png) é #FFD802 sobre
+     * transparência e o favicon (app/favicon.ico) é chapa #FFDA00 com o KM1 em
+     * preto. A diferença para o token do deck é de ~2° de matiz e nunca aparece
+     * lado a lado; o valor do deck continua sendo a verdade da identidade. Se um
+     * dia o logo vetorial chegar, reconfira os três.
      */
     accent: "#F5D700",
     text: "#FFFFFF",

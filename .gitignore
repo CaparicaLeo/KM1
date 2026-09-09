@@ -23,6 +23,9 @@
 # misc
 .DS_Store
 *.pem
+# fluxo de cópia do Windows para o WSL cria este alternate data stream ao lado
+# de cada arquivo baixado; é metadado do NTFS, não faz parte do projeto
+*:Zone.Identifier
 
 # debug
 npm-debug.log*
