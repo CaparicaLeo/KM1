@@ -90,9 +90,21 @@ export const event = {
   /**
    * Link oficial de inscrição (TicketSports). É o destino de TODO CTA da
    * página — não existe formulário próprio nem lista de espera aqui.
+   *
+   * Aponta direto para a escolha de modalidade (categoria.aspx), e não para a
+   * página de divulgação do evento (/e/corrida-km-1-...-86470): tira um clique
+   * do caminho até o carrinho.
+   *
+   * ATENÇÃO (conferido em 09/09/2026): esta URL responde com a tarja
+   * "Preview para aprovação — as inscrições realizadas nesta página são
+   * exclusivamente para testes, sem validade, e serão canceladas
+   * automaticamente". Enquanto esse aviso estiver lá, o link serve para
+   * homologação, não para venda. Confirme com a TicketSports que o evento saiu
+   * do modo preview antes de a LP ir ao ar — ou volte para a página de
+   * divulgação, que é pública.
    */
   registrationUrl:
-    "https://www.ticketsports.com.br/e/corrida-km-1-etapa-sao-jose-dos-pinhais-86470",
+    "https://site.ticketsports.com.br/Inscricao/categoria.aspx?__idEvento=86470&origem=novo-site&lang=pt-BR",
 
   /**
    * Marca do KM1: PNG transparente com lettering amarelo — o valor medido no
