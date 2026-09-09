@@ -7,11 +7,12 @@ import { useGsapScroll } from "@/lib/hooks/useGsapScroll";
 import type { HeadlineLine } from "@/data/types";
 
 /**
- * Slide de impacto do deck: a única chapa 100% amarela da página, com texto
- * preto e uma frase curta de transição de seção.
+ * Slide de impacto do deck: chapa amarela com texto preto e uma frase curta de
+ * transição de seção.
  *
- * Ele só funciona porque é raro. Se um dia aparecer um segundo, o preto deixa
- * de ser o fundo dominante e a identidade vira outra.
+ * Divide o amarelo da página com a seção de produtos, e são essas duas — se
+ * entrar uma terceira, o preto deixa de ser o fundo dominante e a identidade
+ * vira outra. Aqui a chapa é o fundo do texto; lá ela emoldura cards pretos.
  */
 export function ImpactSlide({
   id,

@@ -15,12 +15,15 @@ export function SectionHeader({
   align = "left",
   className,
   titleClassName,
+  inverted = false,
   children,
 }: {
   intro: SectionIntro;
   align?: "left" | "center";
   className?: string;
   titleClassName?: string;
+  /** `true` sobre a chapa amarela: texto no preto do fundo. */
+  inverted?: boolean;
   children?: ReactNode;
 }) {
   return (
@@ -32,14 +35,22 @@ export function SectionHeader({
       )}
     >
       {intro.eyebrow ? (
-        <Eyebrow className="w-fit" data-reveal>
+        <Eyebrow
+          className="w-fit"
+          tone={inverted ? "inverse" : "accent"}
+          data-reveal
+        >
           {intro.eyebrow}
         </Eyebrow>
       ) : null}
 
       <h2
         data-reveal
-        className={cn("headline text-4xl sm:text-5xl lg:text-6xl", titleClassName)}
+        className={cn(
+          "headline text-4xl sm:text-5xl lg:text-6xl",
+          inverted && "text-surface",
+          titleClassName,
+        )}
       >
         {intro.title}
       </h2>
@@ -47,7 +58,10 @@ export function SectionHeader({
       {intro.description ? (
         <p
           data-reveal
-          className="max-w-2xl text-base leading-relaxed text-ink-muted sm:text-lg"
+          className={cn(
+            "max-w-2xl text-base leading-relaxed sm:text-lg",
+            inverted ? "text-surface/75" : "text-ink-muted",
+          )}
         >
           {intro.description}
         </p>

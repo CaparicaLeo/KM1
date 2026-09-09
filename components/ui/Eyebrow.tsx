@@ -6,7 +6,12 @@ type EyebrowProps<T extends ElementType> = {
   as?: T;
   children: ReactNode;
   className?: string;
-} & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className">;
+  /**
+   * `inverse` para uso sobre a chapa amarela: lá o amarelo do eyebrow some, e
+   * quem marca o texto é o preto do fundo invertido.
+   */
+  tone?: "accent" | "inverse";
+} & Omit<ComponentPropsWithoutRef<T>, "as" | "children" | "className" | "tone">;
 
 /**
  * Eyebrow do deck: caixa alta, tracking largo, amarelo.
@@ -19,6 +24,7 @@ export function Eyebrow<T extends ElementType = "p">({
   as,
   children,
   className,
+  tone = "accent",
   ...rest
 }: EyebrowProps<T>) {
   const Component = (as ?? "p") as ElementType;
@@ -26,7 +32,8 @@ export function Eyebrow<T extends ElementType = "p">({
   return (
     <Component
       className={cn(
-        "label-condensed inline-flex items-center gap-2 text-[0.7rem] leading-none text-accent",
+        "label-condensed inline-flex items-center gap-2 text-[0.7rem] leading-none",
+        tone === "accent" ? "text-accent" : "text-surface/70",
         className,
       )}
       {...rest}

@@ -29,9 +29,16 @@ import type { Product } from "@/data/types";
 export function ProductGridBlock({
   items,
   className,
+  onAccent = false,
 }: {
   items: Product[];
   className?: string;
+  /**
+   * `true` quando o bloco está sobre a chapa amarela: os cards seguem pretos
+   * (é o que mantém a meia amarela visível) e quem desenha a grade passa a ser
+   * o próprio fundo da seção, aparecendo nos vãos de 1px.
+   */
+  onAccent?: boolean;
 }) {
   const root = useGsapScroll<HTMLUListElement>(({ scope, prefersReducedMotion }) => {
     staggerIn(scope.querySelectorAll("[data-product]"), {
@@ -47,7 +54,8 @@ export function ProductGridBlock({
     <ul
       ref={root}
       className={cn(
-        "grid gap-px border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4",
+        "grid gap-px sm:grid-cols-2 lg:grid-cols-4",
+        onAccent ? "bg-transparent" : "border border-white/10 bg-white/10",
         className,
       )}
     >
