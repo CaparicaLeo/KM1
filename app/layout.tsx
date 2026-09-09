@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "corrida de rua",
     "São José dos Pinhais",
     "3 km",
-    "7 km",
+    "5 km",
     "Thomé & Santos",
     "corrida Paraná",
   ],

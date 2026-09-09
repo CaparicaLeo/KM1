@@ -67,7 +67,7 @@ export function FinalCtaSection() {
         <Marquee
           items={[
             "3 KM",
-            "7 KM",
+            "5 KM",
             event.location.city.toUpperCase(),
             event.circuit.name.toUpperCase(),
           ]}

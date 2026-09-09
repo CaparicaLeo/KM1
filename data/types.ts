@@ -52,7 +52,7 @@ export type CardItem = {
   eyebrow: string;
   icon: string;
   title: string;
-  /** Linha de destaque à direita do título (ex.: "7 KM"). */
+  /** Linha de destaque à direita do título (ex.: "5 KM"). */
   badge?: string;
   description?: string;
   meta?: string[];

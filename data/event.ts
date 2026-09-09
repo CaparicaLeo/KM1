@@ -37,15 +37,17 @@ import type {
  *    remarcação de agosto para novembro — mas "sugere" não publica data.
  *    Confirmado: preencher `date` com o ISO e a LP passa a exibir sozinha.
  *
- * 2. DISTÂNCIAS — 3 km e 7 km, conforme levantamento (Corrida360) e conforme a
- *    etapa Guaratuba do mesmo circuito. Atenção: o data/events.js do site
- *    institucional descreve esta etapa como "3km e 5km", em um bloco de texto
- *    que se repete igual em várias etapas (parece boilerplate). Confirmar com a
- *    organização antes de virar peça de mídia.
+ * 2. DISTÂNCIAS — RESOLVIDO: 3 km e 5 km, confirmado pela Thomé & Santos em
+ *    09/09/2026. O levantamento de terceiros (Corrida360) trazia 3 km e 7 km,
+ *    que é o par da etapa Guaratuba — a confirmação bate com o data/events.js
+ *    do site institucional, que já descrevia esta etapa como 3 km e 5 km.
+ *    Fica registrado porque material antigo com "7 km" circula por aí.
  *
- * 3. IDADE MÍNIMA — 16 anos para o 7 km e 13 ou 14 anos para o 3 km, dependendo
- *    da fonte. Como diverge, nenhuma idade é publicada: a LP manda para o
- *    regulamento oficial. Confirmado, preencher `minAge` de cada prova.
+ * 3. IDADE MÍNIMA — em aberto. O levantamento trazia 16 anos para a prova maior
+ *    e 13 ou 14 anos para o 3 km, dependendo da fonte, e era sobre um par de
+ *    distâncias que a organização já corrigiu (ver item 2) — ou seja, não vale
+ *    nem como estimativa. Nenhuma idade é publicada: a LP manda para o
+ *    regulamento oficial. Confirmada, preencher `minAge` de cada prova.
  *
  * 4. VALOR DA INSCRIÇÃO — não confirmado. O deck comercial usa R$ 49,90 como
  *    preço-alvo de posicionamento e o regulamento da etapa de Pinhais (outra
@@ -178,7 +180,7 @@ export const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
  * motivo do topo do arquivo. Abaixo de 155 caracteres para não ser truncada.
  */
 export const seoDescription =
-  "KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 7 km na Praça do Verbo Divino, organizada pela Thomé & Santos. Inscrição oficial online.";
+  "KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km na Praça do Verbo Divino, organizada pela Thomé & Santos. Inscrição oficial online.";
 
 /**
  * CTA de inscrição.
@@ -220,11 +222,11 @@ export const hero = {
   /** Versão em uma linha — vira o <h1> e alimenta o SEO. */
   headline: `${event.name}`,
   subheadline:
-    "Uma corrida de rua para quem está começando e para quem corre há anos: 3 km e 7 km saindo da Praça do Verbo Divino, no Centro.",
+    "Uma corrida de rua para quem está começando e para quem corre há anos: 3 km e 5 km saindo da Praça do Verbo Divino, no Centro.",
   scrollHint: "Role para ver as provas",
   marquee: [
     "3 KM",
-    "7 KM",
+    "5 KM",
     "CORRIDA E CAMINHADA",
     "SÃO JOSÉ DOS PINHAIS",
     "CIRCUITO KM1",
@@ -272,11 +274,11 @@ export const races = {
       meta: ["Aberta a caminhada", "Percurso no Centro"],
     },
     {
-      id: "7km",
+      id: "5km",
       eyebrow: "Prova 02",
       icon: "pin",
       title: "Corrida",
-      badge: "7 KM",
+      badge: "5 KM",
       description:
         "A prova principal da etapa, para quem já treina e quer fechar o percurso no ritmo.",
       meta: ["Cronometragem oficial", "Percurso no Centro"],
@@ -347,7 +349,7 @@ export const scale = {
     emptyState: "",
   } satisfies BigNumber,
   kpis: [
-    { id: "provas", icon: "run", label: "3 km e 7 km" },
+    { id: "provas", icon: "run", label: "3 km e 5 km" },
     { id: "local", icon: "pin", label: "Praça do Verbo Divino" },
     { id: "cronometragem", icon: "timer", label: "Cronometragem oficial" },
     { id: "organizacao", icon: "shield", label: "Organização Thomé & Santos" },
