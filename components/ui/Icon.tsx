@@ -15,6 +15,14 @@ const paths: Record<string, ReactElement> = {
       <circle cx="12" cy="10" r="2.6" />
     </>
   ),
+  calendar: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="15" rx="1.5" />
+      <path d="M3.5 10h17" />
+      <path d="M8 3.5v4M16 3.5v4" />
+      <path d="M7.5 13.5h3v3h-3z" />
+    </>
+  ),
   run: (
     <>
       <circle cx="16" cy="5" r="2" />

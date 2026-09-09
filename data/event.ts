@@ -1,3 +1,5 @@
+import { formatEventDate, formatEventDateShort } from "@/lib/format";
+
 import type {
   BigNumber,
   CardItem,
@@ -8,6 +10,7 @@ import type {
   Media,
   MiniKpi,
   NavItem,
+  Product,
   SectionIntro,
 } from "./types";
 
@@ -27,15 +30,12 @@ import type {
  *
  * PENDÊNCIAS ABERTAS (setembro/2026):
  *
- * 1. DATA — não vai para o ar até a Thomé & Santos confirmar.
- *    · página oficial de inscrição (TicketSports) e o JSON-LD dela: 01/11/2026,
- *      largada 07:00;
- *    · data/events.js do site institucional da própria Thomé & Santos:
- *      "01 de novembro, 2026" (dateISO 2026-11-01), status "upcoming";
- *    · Corrida360 e um snapshot indexado da página oficial: 30/08/2026.
- *    As duas fontes de primeira mão batem em 01/11/2026, o que sugere
- *    remarcação de agosto para novembro — mas "sugere" não publica data.
- *    Confirmado: preencher `date` com o ISO e a LP passa a exibir sozinha.
+ * 1. DATA — RESOLVIDO: 01/11/2026, largada 07:00, liberado pela Thomé & Santos
+ *    em 09/09/2026. Três fontes batiam: a página oficial de inscrição e o
+ *    JSON-LD dela, o data/events.js do site institucional e a arte de capa do
+ *    Instagram da etapa ("01 / 11" em chapa amarela). O 30/08/2026 que aparecia
+ *    no Corrida360 e num snapshot indexado é remarcação antiga — se reaparecer
+ *    em algum material, está errado.
  *
  * 2. DISTÂNCIAS — RESOLVIDO: 3 km e 5 km, confirmado pela Thomé & Santos em
  *    09/09/2026. O levantamento de terceiros (Corrida360) trazia 3 km e 7 km,
@@ -49,7 +49,14 @@ import type {
  *    nem como estimativa. Nenhuma idade é publicada: a LP manda para o
  *    regulamento oficial. Confirmada, preencher `minAge` de cada prova.
  *
- * 4. VALOR DA INSCRIÇÃO — não confirmado. O deck comercial usa R$ 49,90 como
+ * 4. PRODUTOS OFICIAIS — as peças (camiseta, moletom, meias) vieram dos
+ *    mockups aprovados no Drive da Thomé & Santos. Falta o comercial: se
+ *    moletom e meias são vendidos, onde e por quanto. Enquanto `price` e `url`
+ *    forem null, os cards mostram a peça e mandam a pessoa para a organização —
+ *    nenhum preço e nenhum botão de compra são inventados. A camiseta é a
+ *    única marcada como inclusa no kit, porque isso o material confirma.
+ *
+ * 5. VALOR DA INSCRIÇÃO — não confirmado. O deck comercial usa R$ 49,90 como
  *    preço-alvo de posicionamento e o regulamento da etapa de Pinhais (outra
  *    cidade) cita R$ 69,90 + taxas. São coisas diferentes e não se misturam:
  *    `price.value` fica null e o bloco manda para a página oficial.
@@ -67,15 +74,15 @@ export const event = {
   },
 
   /**
-   * ISO 8601 quando confirmada (ex.: "2026-11-01T07:00:00-03:00").
-   * Enquanto for null, nenhuma data aparece na LP: nem no hero, nem no rodapé,
-   * nem no JSON-LD. Ver pendência 1 no topo do arquivo.
+   * ISO 8601 com o fuso de Brasília. Zerar para null devolve a LP ao estado
+   * sem data (hero, rodapé, FAQ e JSON-LD deixam de exibi-la) — o caminho de
+   * volta continua sendo uma linha.
    */
-  date: null as string | null,
-  /** O que a LP diz enquanto não há data confirmada. */
+  date: "2026-11-01T07:00:00-03:00" as string | null,
+  /** Usado quando não há data: mantido para o caso de a etapa ser remarcada. */
   dateLabel: "Edição 2026",
-  /** Idem para o horário de largada (a página oficial indica 07:00). */
-  startTime: null as string | null,
+  /** Horário de largada declarado na página oficial de inscrição. */
+  startTime: "07:00" as string | null,
 
   location: {
     venue: "Praça do Verbo Divino",
@@ -147,6 +154,21 @@ export const event = {
 /** Endereço em uma linha — usado no hero, no rodapé e no JSON-LD. */
 export const fullAddress = `${event.location.venue} — ${event.location.street}, ${event.location.district}, ${event.location.city} - ${event.location.state}, ${event.location.postalCode}`;
 
+/**
+ * Rótulos de data, derivados de `event.date` num lugar só.
+ *
+ * Com `event.date` null, `long` e `short` são null e `label` cai no
+ * "Edição 2026" — é isso que mantém a LP inteira coerente quando a data sai do
+ * ar, sem condicional espalhada por componente.
+ */
+export const eventDate = {
+  long: event.date ? formatEventDate(event.date) : null,
+  short: event.date ? formatEventDateShort(event.date) : null,
+  label: event.date
+    ? `${formatEventDate(event.date)}${event.startTime ? ` · largada ${event.startTime}` : ""}`
+    : event.dateLabel,
+};
+
 /** Domínio de produção, usado quando o ambiente não declara um. */
 const fallbackSiteUrl = "https://km1.thomeesantos.com.br";
 
@@ -191,8 +213,9 @@ export const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
  * Descrição canônica: alimenta metadata, Open Graph e JSON-LD. Sem data, pelo
  * motivo do topo do arquivo. Abaixo de 155 caracteres para não ser truncada.
  */
-export const seoDescription =
-  "KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km na Praça do Verbo Divino, organizada pela Thomé & Santos. Inscrição oficial online.";
+export const seoDescription = event.date
+  ? `KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km em ${eventDate.short}, na Praça do Verbo Divino. Organização Thomé & Santos.`
+  : "KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km na Praça do Verbo Divino, organizada pela Thomé & Santos. Inscrição oficial online.";
 
 /**
  * CTA de inscrição.
@@ -213,7 +236,7 @@ export const registrationCta = {
  * ------------------------------------------------------------------------- */
 
 export const hero = {
-  eyebrow: `${event.location.city} · ${event.location.state} · ${event.dateLabel}`,
+  eyebrow: `${event.location.city} · ${event.location.state} · ${eventDate.short ?? event.dateLabel}`,
   /**
    * Headline como segmentos: o amarelo é aplicado por dado, e ajustar a
    * quebra de linha (que é decisão de cartaz, não do navegador) é mexer só
@@ -237,6 +260,7 @@ export const hero = {
     "Uma corrida de rua para quem está começando e para quem corre há anos: 3 km e 5 km saindo da Praça do Verbo Divino, no Centro.",
   scrollHint: "Role para ver as provas",
   marquee: [
+    eventDate.short ?? event.dateLabel,
     "3 KM",
     "5 KM",
     "CORRIDA E CAMINHADA",
@@ -369,6 +393,80 @@ export const scale = {
 };
 
 /* ---------------------------------------------------------------------------
+ * Produtos oficiais
+ * ------------------------------------------------------------------------- */
+
+export const products = {
+  intro: {
+    eyebrow: "Produtos oficiais",
+    title: "As peças da etapa",
+    description:
+      "Camiseta, moletom e meias com a identidade do KM1. As artes são as aprovadas para produção desta etapa.",
+  } satisfies SectionIntro,
+  items: [
+    {
+      id: "camiseta",
+      name: "Camiseta oficial",
+      detail: "Frente e costas",
+      media: {
+        src: "/images/produtos/camiseta-oficial.png",
+        alt: "Camiseta preta do KM1, frente com a marca em amarelo e costas com a marca Thomé & Santos",
+        width: 1000,
+        height: 624,
+      },
+      price: null,
+      url: null,
+      inKit: true,
+    },
+    {
+      id: "moletom",
+      name: "Moletom KM1",
+      detail: "Com capuz",
+      media: {
+        src: "/images/produtos/moletom.png",
+        alt: "Moletom preto com capuz, marca KM1 em amarelo no peito",
+        width: 760,
+        height: 1032,
+      },
+      price: null,
+      url: null,
+    },
+    {
+      id: "meia-amarela",
+      name: "Meia KM1 amarela",
+      detail: "Cano alto",
+      media: {
+        src: "/images/produtos/meia-amarela.png",
+        alt: "Par de meias amarelas de cano alto com a marca KM1 em preto",
+        width: 760,
+        height: 849,
+      },
+      price: null,
+      url: null,
+    },
+    {
+      id: "meia-preta",
+      name: "Meia KM1 preta",
+      detail: "Cano alto",
+      media: {
+        src: "/images/produtos/meia-preta.png",
+        alt: "Par de meias pretas de cano alto com a marca KM1 em amarelo",
+        width: 760,
+        height: 849,
+      },
+      price: null,
+      url: null,
+    },
+  ] satisfies Product[],
+  /**
+   * Nota de disponibilidade. Enquanto não houver preço e ponto de venda
+   * confirmados, é ela que segura a promessa da seção — sem ela, mockup na
+   * página vira anúncio de produto à venda.
+   */
+  note: "Valores e ponto de venda das peças adicionais são anunciados pela Thomé & Santos. A camiseta oficial já faz parte do kit de quem se inscreve.",
+};
+
+/* ---------------------------------------------------------------------------
  * FAQ
  * ------------------------------------------------------------------------- */
 
@@ -399,8 +497,9 @@ export const faq = {
     {
       id: "data",
       question: "Qual é a data da prova?",
-      answer:
-        "A data oficial da edição 2026 é a que estiver na página de inscrição — é ela que vale. Assim que a organização confirmar, ela também passa a aparecer aqui.",
+      answer: event.date
+        ? `A edição 2026 é no dia ${eventDate.long}, com largada às ${event.startTime}, na ${event.location.venue}. Horários de retirada de kit e de largada por prova saem no regulamento oficial.`
+        : "A data oficial da edição 2026 é a que estiver na página de inscrição — é ela que vale. Assim que a organização confirmar, ela também passa a aparecer aqui.",
     },
     {
       id: "local",
@@ -437,6 +536,7 @@ export const finalCta = {
 export const mainNav: NavItem[] = [
   { label: "As provas", href: "#provas" },
   { label: "O kit", href: "#kit" },
+  { label: "Produtos", href: "#produtos" },
   { label: "A praça", href: "#numeros" },
   { label: "Dúvidas", href: "#faq" },
 ];

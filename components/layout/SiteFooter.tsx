@@ -1,14 +1,10 @@
 import Link from "next/link";
 
-import { event, fullAddress, mainNav } from "@/data/event";
+import { event, eventDate, fullAddress, mainNav } from "@/data/event";
 
 /**
  * Rodapé no padrão do deck: nome do evento à esquerda, circuito e temporada ao
  * centro, índice das seções à direita.
- *
- * A data não aparece aqui pelo mesmo motivo do resto da página — ela ainda
- * está em conferência com a Thomé & Santos (ver data/event.ts). No lugar dela
- * fica o endereço, que é dado confirmado.
  */
 export function SiteFooter() {
   return (
@@ -16,7 +12,10 @@ export function SiteFooter() {
       <div className="container-page grid gap-10 py-14 lg:grid-cols-3 lg:py-16">
         <div>
           <p className="headline text-2xl text-ink">{event.name}</p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink-muted">
+          <p className="label-condensed mt-4 text-[0.7rem] text-accent">
+            {eventDate.label}
+          </p>
+          <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-muted">
             {fullAddress}
           </p>
           <p className="label-condensed mt-4 text-[0.65rem] text-ink-muted">
@@ -52,7 +51,9 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {event.organizer.name}. Todos os
             direitos reservados.
           </p>
-          <p className="label-condensed text-[0.65rem]">{event.dateLabel}</p>
+          <p className="label-condensed text-[0.65rem]">
+            {eventDate.short ?? event.dateLabel}
+          </p>
         </div>
       </div>
     </footer>

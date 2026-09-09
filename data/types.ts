@@ -90,4 +90,22 @@ export type FaqItem = {
   answer: string;
 };
 
+/**
+ * Peça oficial da etapa (camiseta, moletom, meia).
+ *
+ * `price` e `url` são null enquanto a organização não confirmar valor e ponto
+ * de venda — o card não inventa preço nem botão de compra. `inKit` marca o que
+ * já está incluso no kit do atleta, para a seção não sugerir que o corredor
+ * precisa comprar o que já vai receber.
+ */
+export type Product = {
+  id: string;
+  name: string;
+  detail?: string;
+  media: Media;
+  price: number | null;
+  url: string | null;
+  inKit?: boolean;
+};
+
 export type NavItem = { label: string; href: string };

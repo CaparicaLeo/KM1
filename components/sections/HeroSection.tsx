@@ -6,7 +6,7 @@ import { Headline } from "@/components/ui/Headline";
 import { Icon } from "@/components/ui/Icon";
 import { Marquee } from "@/components/ui/Marquee";
 import { Media } from "@/components/ui/Media";
-import { event, hero, registrationCta } from "@/data/event";
+import { event, eventDate, hero, registrationCta } from "@/data/event";
 import { parallax } from "@/lib/animations/presets";
 import { useGsapScroll } from "@/lib/hooks/useGsapScroll";
 
@@ -104,17 +104,24 @@ export function HeroSection() {
           {hero.subheadline}
         </p>
 
-        {/* Selo de local: é a segunda pergunta de quem chega (a primeira, a
-            data, ainda está em conferência — ver data/event.ts). */}
-        <p
-          data-hero-fade
-          className="mt-7 flex w-fit items-center gap-3 border border-white/20 px-5 py-3"
-        >
-          <Icon name="pin" className="size-5 text-accent" />
-          <span className="label-condensed text-sm text-ink">
-            {event.location.venue} · {event.location.city}
-          </span>
-        </p>
+        {/* Data e local: as duas primeiras perguntas de quem chega. Ficam lado
+            a lado no desktop e empilham no mobile — a folga do hero comporta a
+            segunda linha. */}
+        <div data-hero-fade className="mt-7 flex flex-wrap items-center gap-3">
+          <p className="flex items-center gap-3 border border-white/20 px-5 py-3">
+            <Icon name="calendar" className="size-5 shrink-0 text-accent" />
+            <span className="label-condensed text-sm text-ink">
+              {eventDate.label}
+            </span>
+          </p>
+
+          <p className="flex items-center gap-3 border border-white/20 px-5 py-3">
+            <Icon name="pin" className="size-5 shrink-0 text-accent" />
+            <span className="label-condensed text-sm text-ink">
+              {event.location.venue} · {event.location.city}
+            </span>
+          </p>
+        </div>
 
         <div
           data-hero-fade
@@ -128,10 +135,6 @@ export function HeroSection() {
             Ver as provas
           </CTAButton>
         </div>
-
-        <p data-hero-fade className="label-condensed mt-5 text-[0.7rem] text-ink-muted">
-          {event.dateLabel}
-        </p>
 
         <div data-hero-scroll className="mt-10 flex items-center gap-3 text-ink-muted">
           <span data-hero-scroll-arrow aria-hidden className="text-lg leading-none">
