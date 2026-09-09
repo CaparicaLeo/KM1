@@ -23,6 +23,11 @@
 # misc
 .DS_Store
 *.pem
+# arte pesada não versionada: o zip da pasta do Drive tem 314 MB e o GitHub
+# recusa arquivo acima de 100 MB. Originais ficam aqui, fora do git e fora de
+# public/ — o que está em public/ é servido publicamente e sobe no deploy.
+/midias-originais/
+*.zip
 # fluxo de cópia do Windows para o WSL cria este alternate data stream ao lado
 # de cada arquivo baixado; é metadado do NTFS, não faz parte do projeto
 *:Zone.Identifier
