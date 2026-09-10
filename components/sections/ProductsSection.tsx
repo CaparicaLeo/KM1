@@ -11,7 +11,7 @@ import { useGsapScroll } from "@/lib/hooks/useGsapScroll";
  * Peças da etapa sobre a chapa amarela.
  *
  * Os cards continuam pretos de propósito: numa grade inteiramente amarela a
- * meia amarela perde a silhueta e o moletom preto vira a única peça legível.
+ * meia amarela perde a silhueta e só as peças pretas continuam legíveis.
  * Com card preto sobre a chapa, o vão de 1px da grade vira linha amarela e a
  * seção ganha o contraste sem custar a leitura de nenhuma peça.
  */

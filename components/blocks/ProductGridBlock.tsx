@@ -16,9 +16,9 @@ import type { Product } from "@/data/types";
  * borda descaracteriza a peça — aqui a imagem não é ambiente, é catálogo.
  *
  * A caixa da foto é quadrada para todos, e não a proporção de cada arquivo: as
- * peças vieram em formatos bem diferentes (camiseta 1000×624 deitada, moletom
- * 760×1032 em pé) e, com a altura saindo do dado, cada rótulo parava numa
- * altura — a fileira lia como quatro cards desalinhados. Caixa igual e
+ * peças vieram em formatos bem diferentes (camiseta 1000×624 deitada, meias
+ * 760×849 em pé) e, com a altura saindo do dado, cada rótulo parava numa
+ * altura — a fileira lia como cards desalinhados. Caixa igual e
  * `object-contain` deixam a peça inteira à vista com a linha de rótulos
  * alinhada.
  *
@@ -54,7 +54,9 @@ export function ProductGridBlock({
     <ul
       ref={root}
       className={cn(
-        "grid gap-px sm:grid-cols-2 lg:grid-cols-4",
+        /* Três peças: 3 colunas desde o sm. Com 2 colunas sobrava um card órfão, e
+           sobre a chapa amarela a célula vazia vira um buraco amarelo na grade. */
+        "grid gap-px sm:grid-cols-3",
         onAccent ? "bg-transparent" : "border border-white/10 bg-white/10",
         className,
       )}
@@ -67,7 +69,7 @@ export function ProductGridBlock({
         >
           <Media
             media={item.media}
-            sizes="(min-width: 1024px) 20vw, (min-width: 640px) 45vw, 90vw"
+            sizes="(min-width: 1024px) 28vw, (min-width: 640px) 30vw, 90vw"
             className="aspect-square bg-transparent"
             imageClassName="object-contain"
             stretch

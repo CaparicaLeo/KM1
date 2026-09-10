@@ -49,9 +49,10 @@ import type {
  *    nem como estimativa. Nenhuma idade é publicada: a LP manda para o
  *    regulamento oficial. Confirmada, preencher `minAge` de cada prova.
  *
- * 4. PRODUTOS OFICIAIS — as peças (camiseta, moletom, meias) vieram dos
- *    mockups aprovados no Drive da Thomé & Santos. Falta o comercial: se
- *    moletom e meias são vendidos, onde e por quanto. Enquanto `price` e `url`
+ * 4. PRODUTOS OFICIAIS — as peças (camiseta, meias) vieram dos mockups
+ *    aprovados no Drive da Thomé & Santos. O moletom saiu da página a pedido
+ *    (a arte segue em public/images/produtos/moletom.png). Falta o comercial:
+ *    se as meias são vendidas, onde e por quanto. Enquanto `price` e `url`
  *    forem null, os cards mostram a peça e mandam a pessoa para a organização —
  *    nenhum preço e nenhum botão de compra são inventados. A camiseta é a
  *    única marcada como inclusa no kit, porque isso o material confirma.
@@ -401,7 +402,7 @@ export const products = {
     eyebrow: "Produtos oficiais",
     title: "As peças da etapa",
     description:
-      "Camiseta, moletom e meias com a identidade do KM1. As artes são as aprovadas para produção desta etapa.",
+      "Camiseta e meias com a identidade do KM1. As artes são as aprovadas para produção desta etapa.",
   } satisfies SectionIntro,
   items: [
     {
@@ -417,19 +418,6 @@ export const products = {
       price: null,
       url: null,
       inKit: true,
-    },
-    {
-      id: "moletom",
-      name: "Moletom KM1",
-      detail: "Com capuz",
-      media: {
-        src: "/images/produtos/moletom.png",
-        alt: "Moletom preto com capuz, marca KM1 em amarelo no peito",
-        width: 760,
-        height: 1032,
-      },
-      price: null,
-      url: null,
     },
     {
       id: "meia-amarela",

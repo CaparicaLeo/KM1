@@ -91,7 +91,7 @@ export type FaqItem = {
 };
 
 /**
- * Peça oficial da etapa (camiseta, moletom, meia).
+ * Peça oficial da etapa (camiseta, meia).
  *
  * `price` e `url` são null enquanto a organização não confirmar valor e ponto
  * de venda — o card não inventa preço nem botão de compra. `inKit` marca o que
