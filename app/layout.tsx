@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 import { AnimationProvider } from "@/components/animation/AnimationProvider";
 import { event, seoDescription, siteUrl } from "@/data/event";
@@ -80,6 +81,8 @@ export default function RootLayout({
       <body className="min-h-dvh antialiased">
         {/* Provider global de animação: centraliza a manutenção do ScrollTrigger. */}
         <AnimationProvider>{children}</AnimationProvider>
+        {/* Vercel Web Analytics: só envia eventos em produção na Vercel; em dev fica em modo debug no console. */}
+        <Analytics />
       </body>
     </html>
   );
