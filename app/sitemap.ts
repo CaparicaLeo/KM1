@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { siteUrl } from "@/data/event";
 
-/** A LP tem uma rota só; o sitemap existe para o buscador achar o canonical. */
+/** O site tem duas rotas: a LP e a página do regulamento. */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
@@ -10,6 +10,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${siteUrl}/regulamento`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
     },
   ];
 }

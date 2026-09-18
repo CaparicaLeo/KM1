@@ -43,24 +43,30 @@ import type {
  *    do site institucional, que já descrevia esta etapa como 3 km e 5 km.
  *    Fica registrado porque material antigo com "7 km" circula por aí.
  *
- * 3. IDADE MÍNIMA — em aberto. O levantamento trazia 16 anos para a prova maior
- *    e 13 ou 14 anos para o 3 km, dependendo da fonte, e era sobre um par de
- *    distâncias que a organização já corrigiu (ver item 2) — ou seja, não vale
- *    nem como estimativa. Nenhuma idade é publicada: a LP manda para o
- *    regulamento oficial. Confirmada, preencher `minAge` de cada prova.
+ * 3. IDADE MÍNIMA — em aberto, e agora por decisão. O regulamento oficial se
+ *    contradiz: o item 1.1 descreve 14 anos de idade para o 3 km e o 8.2 traz
+ *    13 anos. A Thomé & Santos não pode revisar uma versão divergente do
+ *    documento, e o site não escolhe um dos dois lados: nenhuma idade é
+ *    publicada na LP nem no FAQ, e quem mostra o texto ao vivo é a página
+ *    /regulamento (ver `regulamentoSource`). O dia em que o documento sair
+ *    contradizendo-se, o site também deixa de se contradizer — em uma linha o
+ *    `minAge` de cada prova volta a ser publicado.
  *
  * 4. PRODUTOS OFICIAIS — as peças (camiseta, meias) vieram dos mockups
  *    aprovados no Drive da Thomé & Santos. O moletom saiu da página a pedido
  *    (a arte segue em public/images/produtos/moletom.png). Falta o comercial:
  *    se as meias são vendidas, onde e por quanto. Enquanto `price` e `url`
  *    forem null, os cards mostram a peça e mandam a pessoa para a organização —
- *    nenhum preço e nenhum botão de compra são inventados. A camiseta é a
- *    única marcada como inclusa no kit, porque isso o material confirma.
+ *    nenhum preço e nenhum botão de compra são inventados. A camiseta saiu do
+ *    `inKit`: o kit básico do regulamento (5.1) não a inclui — só o kit plus —,
+ *    e a nota da seção, não o badge do card, é quem diz isso.
  *
- * 5. VALOR DA INSCRIÇÃO — não confirmado. O deck comercial usa R$ 49,90 como
- *    preço-alvo de posicionamento e o regulamento da etapa de Pinhais (outra
- *    cidade) cita R$ 69,90 + taxas. São coisas diferentes e não se misturam:
- *    `price.value` fica null e o bloco manda para a página oficial.
+ * 5. VALOR DA INSCRIÇÃO — não publicado na LP, por decisão. O regulamento
+ *    oficial traz valores por lote (8.8), mas fixá-los aqui criaria a versão
+ *    divergente que a Thomé & Santos não pode revisar se o documento mudar: o
+ *    vendedor é a página oficial de inscrição e o texto autoritativo é o
+ *    regulamento ao vivo em /regulamento. `price.value` fica null e o estado
+ *    vazio aponta para lá.
  */
 
 export const event = {
@@ -233,6 +239,52 @@ export const registrationCta = {
 } satisfies Cta;
 
 /* ---------------------------------------------------------------------------
+ * Regulamento oficial (fonte viva, sem transcrição)
+ * ------------------------------------------------------------------------- */
+
+/**
+ * Documento público do regulamento no Google Docs, enviado pela Thomé &
+ * Santos. O site NÃO transcreve o texto: a página /regulamento busca o
+ * documento a cada visita e renderiza o que ele disser naquele momento.
+ * Quem edita é a organização, uma vez; o site acompanha. Mudou o documento,
+ * mudou a página — trocar o `docId` é trocar a fonte inteira em uma linha.
+ *
+ * O documento tem erros de escrita e contradições internas que chegam vivos
+ * à página (ex.: "três (2) modalidades" em 3.3; idade mínima do 3 km — 1.1
+ * diz 14 anos, 8.2 diz 13). O site não corrige: a Thomé & Santos não pode
+ * revisar uma versão divergente, e corrigir aqui criaria exatamente essa
+ * versão. O texto exibido é o do documento, erros inclusos.
+ */
+export const regulamentoSource = {
+  docId: "1a1NJO4qt9LKgqRmige8pmvX-4d4GF0xp",
+  /** Export em texto plano — o documento é público, funciona sem login. */
+  exportUrl: "https://docs.google.com/document/d/1a1NJO4qt9LKgqRmige8pmvX-4d4GF0xp/export?format=txt",
+  /** Abre o documento para leitura no próprio Google Docs. */
+  viewUrl: "https://docs.google.com/document/d/1a1NJO4qt9LKgqRmige8pmvX-4d4GF0xp/edit",
+} as const;
+
+/** Export em texto plano consumido por lib/regulamento.ts. */
+export const regulamentoExportUrl = regulamentoSource.exportUrl;
+
+/** Conteúdo da página /regulamento (copy em data, nunca no JSX). */
+export const regulamentoPage = {
+  intro: {
+    eyebrow: "Regulamento oficial",
+    title: "O documento da etapa",
+    description:
+      "O texto abaixo é o regulamento oficial da Thomé & Santos, carregado direto do Google Docs. Qualquer ajuste feito pela organização no documento aparece aqui — sem cópia intermediária.",
+  } satisfies SectionIntro,
+  sourceNote:
+    "Fonte: documento oficial no Google Docs, editável pela organização.",
+  emptyState: {
+    eyebrow: "Regulamento oficial",
+    title: "Documento indisponível no momento",
+    description:
+      "Não foi possível carregar o texto agora. O regulamento vigente é o da página oficial de inscrição — é o documento que vale no dia da prova.",
+  } satisfies SectionIntro,
+};
+
+/* ---------------------------------------------------------------------------
  * Hero
  * ------------------------------------------------------------------------- */
 
@@ -359,7 +411,7 @@ export const kit = {
     prefix: "R$ ",
     caption: "Valor da inscrição",
     emptyState:
-      "O valor por lote é o que estiver na página oficial de inscrição — é de lá que sai o preço válido no dia da compra.",
+      "O valor por lote é o do regulamento oficial da etapa, publicado na íntegra aqui no site — é de lá que sai o preço válido no dia da compra.",
   } satisfies BigNumber,
 };
 
@@ -417,7 +469,7 @@ export const products = {
       },
       price: null,
       url: null,
-      inKit: true,
+      inKit: false,
     },
     {
       id: "meia-amarela",
@@ -449,9 +501,11 @@ export const products = {
   /**
    * Nota de disponibilidade. Enquanto não houver preço e ponto de venda
    * confirmados, é ela que segura a promessa da seção — sem ela, mockup na
-   * página vira anúncio de produto à venda.
+   * página vira anúncio de produto à venda. A camiseta segue a composição do
+   * kit do regulamento (5.1): inclusa no kit plus, fora do básico — por isso
+   * o card dela não exibe o badge "No kit".
    */
-  note: "Valores e ponto de venda das peças adicionais são anunciados pela Thomé & Santos. A camiseta oficial já faz parte do kit de quem se inscreve.",
+  note: "Valores e ponto de venda das peças adicionais são anunciados pela Thomé & Santos. A camiseta oficial faz parte do kit plus da etapa (o kit básico vem sem ela) — a composição completa de cada kit está no regulamento oficial.",
 };
 
 /* ---------------------------------------------------------------------------
@@ -468,25 +522,25 @@ export const faq = {
       id: "idade",
       question: "Qual é a idade mínima de cada prova?",
       answer:
-        "A idade mínima varia entre as duas distâncias e é definida no regulamento oficial da etapa, publicado na página de inscrição. Confira lá antes de inscrever um atleta menor de idade — é o documento que vale no dia da prova.",
+        "A idade mínima varia entre as duas distâncias e está no regulamento oficial da etapa, publicado na íntegra aqui no site. Confira /regulamento antes de inscrever um atleta menor de idade — é o documento que vale no dia da prova.",
     },
     {
       id: "kit",
       question: "O que vem no kit do atleta?",
       answer:
-        "Camiseta oficial, número de peito, medalha temática e cronometragem oficial, além da estrutura de prova: hidratação em percurso, bananinha pós-prova, seguro do atleta e atendimento médico. A composição exata do kit de cada lote está descrita na página de inscrição.",
+        "O kit varia conforme o lote: o básico traz número de peito, chip de cronometragem, hidratação e medalha; o plus acrescenta a camiseta oficial. A composição exata de cada lote está no regulamento oficial da etapa, publicado na íntegra aqui no site — e o que for vendido é o que a página de inscrição descreve.",
     },
     {
       id: "vagas",
       question: "Como funciona a reposição de vagas?",
       answer:
-        "Transferência de titularidade, troca de distância e reposição de vagas seguem os prazos e as condições do regulamento oficial da etapa. Como a inscrição é vendida pelo TicketSports, cancelamentos e devoluções seguem a política informada no ato da compra.",
+        "Transferência de titularidade, troca de distância e reposição de vagas seguem os prazos e as condições do regulamento oficial da etapa, publicado na íntegra aqui no site. Como a inscrição é vendida pelo TicketSports, cancelamentos e devoluções seguem a política informada no ato da compra.",
     },
     {
       id: "data",
       question: "Qual é a data da prova?",
       answer: event.date
-        ? `A edição 2026 é no dia ${eventDate.long}, com largada às ${event.startTime}, na ${event.location.venue}. Horários de retirada de kit e de largada por prova saem no regulamento oficial.`
+        ? `A edição 2026 é no dia ${eventDate.long}, com largada às ${event.startTime}, na ${event.location.venue}. Horários de retirada de kit e de largada por prova saem no regulamento oficial, publicado na íntegra aqui no site.`
         : "A data oficial da edição 2026 é a que estiver na página de inscrição — é ela que vale. Assim que a organização confirmar, ela também passa a aparecer aqui.",
     },
     {
@@ -514,7 +568,7 @@ export const finalCta = {
     [{ text: "km 1.", accent: true }],
   ] satisfies HeadlineLine[],
   description:
-    "As inscrições da Etapa São José dos Pinhais são vendidas na página oficial do evento. Lotes, valores e regulamento estão lá.",
+    "As inscrições da Etapa São José dos Pinhais são vendidas na página oficial do evento. Lotes e valores estão lá — e o regulamento completo, publicado na íntegra aqui no site, é o que vale no dia da prova.",
 };
 
 /* ---------------------------------------------------------------------------
@@ -527,4 +581,5 @@ export const mainNav: NavItem[] = [
   { label: "Produtos", href: "#produtos" },
   { label: "A praça", href: "#numeros" },
   { label: "Dúvidas", href: "#faq" },
+  { label: "Regulamento", href: "/regulamento" },
 ];

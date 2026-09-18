@@ -3,6 +3,13 @@ import Link from "next/link";
 import { event, eventDate, fullAddress, mainNav } from "@/data/event";
 
 /**
+ * Âncora de seção (#provas, #kit...) vira caminho absoluto (/#provas): o
+ * índice funciona tanto na home quanto partindo de /regulamento, onde uma
+ * âncora solta não teria para onde rolar.
+ */
+const navHref = (href: string) => (href.startsWith("/") ? href : `/${href}`);
+
+/**
  * Rodapé no padrão do deck: nome do evento à esquerda, circuito e temporada ao
  * centro, índice das seções à direita.
  */
@@ -32,7 +39,7 @@ export function SiteFooter() {
             {mainNav.map((item) => (
               <li key={item.href}>
                 <Link
-                  href={item.href}
+                  href={navHref(item.href)}
                   className="text-sm text-ink/85 transition-colors hover:text-accent"
                 >
                   {item.label}

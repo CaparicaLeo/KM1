@@ -109,3 +109,35 @@ export type Product = {
 };
 
 export type NavItem = { label: string; href: string };
+
+/**
+ * Regulamento oficial: estrutura devolvida pelo parser de lib/regulamento.ts.
+ *
+ * O texto NÃO é transcrito em data/event.ts — a fonte viva vive no Google Docs
+ * (ver `regulamentoSource`). Este tipo só descreve a árvore que a página
+ * /regulamento renderiza, então conteúdo e marca não podem divergir: se o
+ * documento mudar, muda a árvore, muda a página.
+ */
+export type RegulamentoItem = {
+  /** Número do item no documento (ex.: "5.1"); vazio para blocos sem número. */
+  number: string;
+  /** Linhas do item na ordem do documento, com os espaços internos preservados
+   *  (a tabela de categorias do cap. 10 depende disso para não perder as colunas). */
+  lines: string[];
+};
+
+export type RegulamentoChapter = {
+  /** Número do capítulo no documento (ex.: "5"). */
+  number: string;
+  /** Título do capítulo, em caixa alta como no original (ex.: "COMPOSIÇÃO DO KIT"). */
+  title: string;
+  items: RegulamentoItem[];
+};
+
+export type RegulamentoDocument = {
+  /** Primeira linha do documento (o nome completo do regulamento). */
+  title: string;
+  /** Assinatura de data ao final ("Curitiba, 06 de abril de 2026."), se houver. */
+  issuedAt: string | null;
+  chapters: RegulamentoChapter[];
+};

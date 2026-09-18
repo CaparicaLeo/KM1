@@ -9,6 +9,14 @@ import { event, mainNav, registrationCta } from "@/data/event";
 import { cn } from "@/lib/cn";
 
 /**
+ * Âncora de seção (#provas, #kit...) vira caminho absoluto (/#provas): na
+ * home o navegador rola na mesma página, e fora dela o link leva de volta à
+ * seção da landing. O "Regulamento" já entra com caminho próprio (/regulamento)
+ * e passa intacto.
+ */
+const navHref = (href: string) => (href.startsWith("/") ? href : `/${href}`);
+
+/**
  * Header do site. Fica transparente sobre o hero e ganha chapa ao sair dele.
  */
 export function SiteHeader() {
@@ -61,7 +69,7 @@ export function SiteHeader() {
             {mainNav.map((item) => (
               <li key={item.href}>
                 <Link
-                  href={item.href}
+                  href={navHref(item.href)}
                   className="label-condensed text-[0.7rem] text-ink-muted transition-colors hover:text-accent"
                 >
                   {item.label}
@@ -103,7 +111,7 @@ export function SiteHeader() {
             {mainNav.map((item) => (
               <li key={item.href}>
                 <Link
-                  href={item.href}
+                  href={navHref(item.href)}
                   onClick={() => setIsMenuOpen(false)}
                   className="headline block py-3 text-2xl text-ink"
                 >
