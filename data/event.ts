@@ -105,15 +105,8 @@ export const event = {
    *
    * Aponta direto para a escolha de modalidade (categoria.aspx), e não para a
    * página de divulgação do evento (/e/corrida-km-1-...-86470): tira um clique
-   * do caminho até o carrinho.
-   *
-   * ATENÇÃO (rechecado em 06/10/2026): esta URL ainda devolvia a tarja
-   * "Preview para aprovação — as inscrições realizadas nesta página são
-   * exclusivamente para testes, sem validade, e serão canceladas
-   * automaticamente". A organização informou que a inscrição está aprovada
-   * para venda — mas, no mesmo dia, a tarja continuava no ar. Reconfirme a
-   * URL (e a ausência do aviso) com a TicketSports antes do deploy: enquanto
-   * a tarja estiver lá, o link serve para homologação, não para venda.
+   * do caminho até o carrinho. Confirmado pela organização em 06/10/2026 como
+   * o link de venda da etapa.
    */
   registrationUrl:
     "https://site.ticketsports.com.br/Inscricao/categoria.aspx?__idEvento=86470&origem=novo-site&lang=pt-BR",
