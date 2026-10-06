@@ -37,6 +37,23 @@ export const theme = {
     inverseText: "#0D0D0D",
   },
 
+  /**
+   * Metal da medalha 3D procedural (components/medal/ProceduralMedal.tsx).
+   *
+   * Não é cor de identidade: é albedo PBR de ouro, lido pela luz e pelos
+   * reflexos do Environment, então o tom que chega à tela depende do ângulo.
+   * Fica aqui pela regra de "nenhum hex fora do tema". Os dois são mais
+   * alaranjados e mais escuros que o accent de propósito: a medalha fica sobre
+   * a chapa amarela, e um ouro claro some no fundo como a meia amarela sumiria.
+   * Quando o .glb real chegar, as cores passam a vir dos materiais do arquivo.
+   */
+  medal: {
+    /** Relevo polido: borda, argola e "KM1". */
+    polished: "#E2A93E",
+    /** Campo do disco, acetinado e um tom abaixo, para o relevo destacar. */
+    field: "#A8792A",
+  },
+
   typography: {
     /**
      * Display condensada, pesada, caixa alta — o "cartaz" do KM1.

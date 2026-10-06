@@ -1,4 +1,4 @@
-import type { ElementType } from "react";
+import type { ElementType, HTMLAttributes } from "react";
 
 import { Highlight } from "@/components/ui/Highlight";
 import { cn } from "@/lib/cn";
@@ -22,7 +22,9 @@ export function Headline({
   tone = "light",
 }: {
   lines: HeadlineLine[];
-  as?: ElementType;
+  /* Só tags HTML: o R3F acrescenta os elementos do three ao JSX global, e um
+     ElementType solto passaria a incluir tags sem `children`. */
+  as?: ElementType<HTMLAttributes<HTMLElement>>;
   className?: string;
   /** `dark` inverte o destaque para o slide de chapa amarela. */
   tone?: "light" | "dark";

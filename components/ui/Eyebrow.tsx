@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ElementType, HTMLAttributes, ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
 
@@ -27,7 +27,9 @@ export function Eyebrow<T extends ElementType = "p">({
   tone = "accent",
   ...rest
 }: EyebrowProps<T>) {
-  const Component = (as ?? "p") as ElementType;
+  /* Estreito para tags HTML: o R3F acrescenta os elementos do three ao JSX
+     global, e um ElementType solto passaria a incluir tags sem `children`. */
+  const Component = (as ?? "p") as ElementType<HTMLAttributes<HTMLElement>>;
 
   return (
     <Component
