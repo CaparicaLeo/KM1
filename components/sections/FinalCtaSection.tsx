@@ -50,7 +50,12 @@ export function FinalCtaSection() {
         </p>
 
         <div data-reveal className="mt-10">
-          <CTAButton href={registrationCta.href} pulse animateIn={false}>
+          <CTAButton
+            href={registrationCta.href}
+            pulse
+            animateIn={false}
+            trackId="inscricao_final"
+          >
             {registrationCta.label}
           </CTAButton>
         </div>

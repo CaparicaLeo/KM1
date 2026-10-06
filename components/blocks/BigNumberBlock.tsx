@@ -52,7 +52,14 @@ export function BigNumberBlock({
     const value = Number(element.dataset.count);
     if (Number.isNaN(value)) return;
 
-    countUp(element, { value, prefersReducedMotion, trigger: scope });
+    // `decimals` acompanha o dado: sem ele, 69.9 apareceria como "70" na
+    // contagem e no HTML final (o formato é o de lib/format.ts).
+    countUp(element, {
+      value,
+      decimals: number.decimals ?? 0,
+      prefersReducedMotion,
+      trigger: scope,
+    });
   });
 
   const hasValue = number.value !== null;
@@ -73,7 +80,7 @@ export function BigNumberBlock({
             <span className="mr-3 text-[0.35em] text-accent">{number.prefix}</span>
           ) : null}
           <span data-count={number.value} suppressHydrationWarning>
-            {formatNumber(number.value ?? 0)}
+            {formatNumber(number.value ?? 0, number.decimals ?? 0)}
           </span>
           {number.suffix ? (
             <span className="text-accent">{number.suffix}</span>

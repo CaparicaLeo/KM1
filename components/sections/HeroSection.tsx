@@ -123,11 +123,21 @@ export function HeroSection() {
           </p>
         </div>
 
+        {/*
+          Preço e prazo acima da dobra, antes do clique: quem decide por valor
+          não precisa rolar até a seção do kit. Linha curta em label amarelo —
+          se um dia a primeira tela apertar no notebook de 900px, este é o
+          elemento a mover (ver comentário em hero.priceNote).
+        */}
+        <p data-hero-fade className="label-condensed mt-4 text-[0.65rem] text-accent">
+          {hero.priceNote}
+        </p>
+
         <div
           data-hero-fade
           className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
         >
-          <CTAButton href={registrationCta.href} pulse animateIn={false}>
+          <CTAButton href={registrationCta.href} pulse animateIn={false} trackId="inscricao_hero">
             {registrationCta.label}
           </CTAButton>
 

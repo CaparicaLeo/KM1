@@ -61,46 +61,53 @@ export function ProductGridBlock({
         className,
       )}
     >
-      {items.map((item) => (
-        <li
-          key={item.id}
-          data-product
-          className="flex flex-col bg-surface p-6 transition-colors duration-300 hover:bg-surface-alt"
-        >
-          <Media
-            media={item.media}
-            sizes="(min-width: 1024px) 28vw, (min-width: 640px) 30vw, 90vw"
-            className="aspect-square bg-transparent"
-            imageClassName="object-contain"
-            stretch
-          />
+      {items.map((item) => {
+        // Badge do item tem prioridade: "No kit plus" é mais preciso que o
+        // "No kit" genérico — o kit básico do regulamento (5.1) não traz a
+        // camiseta, e sem essa letra miúda o card parece dizer o contrário.
+        const badge = item.badge ?? (item.inKit ? "No kit" : null);
 
-          {/* `mt-auto` mantém a linha de rótulos colada na base mesmo quando um
-              nome quebra em duas linhas. */}
-          <div className="mt-auto flex items-start justify-between gap-3 pt-6">
-            <div>
-              <h3 className="label-condensed text-[0.8rem] text-ink">{item.name}</h3>
-              {item.detail ? (
-                <p className="mt-2 text-sm text-ink-muted">{item.detail}</p>
+        return (
+          <li
+            key={item.id}
+            data-product
+            className="flex flex-col bg-surface p-6 transition-colors duration-300 hover:bg-surface-alt"
+          >
+            <Media
+              media={item.media}
+              sizes="(min-width: 1024px) 28vw, (min-width: 640px) 30vw, 90vw"
+              className="aspect-square bg-transparent"
+              imageClassName="object-contain"
+              stretch
+            />
+
+            {/* `mt-auto` mantém a linha de rótulos colada na base mesmo quando um
+                nome quebra em duas linhas. */}
+            <div className="mt-auto flex items-start justify-between gap-3 pt-6">
+              <div>
+                <h3 className="label-condensed text-[0.8rem] text-ink">{item.name}</h3>
+                {item.detail ? (
+                  <p className="mt-2 text-sm text-ink-muted">{item.detail}</p>
+                ) : null}
+              </div>
+
+              {badge ? (
+                <span className="label-condensed shrink-0 bg-accent px-2 py-1 text-[0.55rem] text-surface">
+                  {badge}
+                </span>
               ) : null}
             </div>
 
-            {item.inKit ? (
-              <span className="label-condensed shrink-0 bg-accent px-2 py-1 text-[0.55rem] text-surface">
-                No kit
-              </span>
+            {/* O preço só existe quando confirmado; até lá, a nota da seção
+                explica onde perguntar. */}
+            {item.price !== null ? (
+              <p className="poster-number mt-4 text-2xl text-accent">
+                R$ {formatNumber(item.price, 2)}
+              </p>
             ) : null}
-          </div>
-
-          {/* O preço só existe quando confirmado; até lá, a nota da seção
-              explica onde perguntar. */}
-          {item.price !== null ? (
-            <p className="poster-number mt-4 text-2xl text-accent">
-              R$ {formatNumber(item.price, 2)}
-            </p>
-          ) : null}
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -26,16 +26,21 @@ export function KitSection() {
         <IconGridBlock items={kit.items} className="mt-14 lg:mt-20" />
 
         {/*
-          O valor da inscrição ainda não foi confirmado, então o bloco entra no
-          estado vazio: sem número, com a frase que manda para a página oficial.
-          Preencher `kit.price.value` em data/event.ts é o que faz o número
-          aparecer — nada aqui muda.
+          O valor vem do regulamento oficial (5.1 e 8.8), publicado em
+          data/event.ts com a data da conferência — mudou o documento, atualize
+          `kit.price` lá. Este bloco é o que empurra da lista de itens direto
+          para a inscrição.
         */}
         <BigNumberBlock
           number={kit.price}
           className="mt-14"
           action={
-            <CTAButton href={registrationCta.href} size="md" animateIn={false}>
+            <CTAButton
+              href={registrationCta.href}
+              size="md"
+              animateIn={false}
+              trackId="inscricao_kit"
+            >
               {registrationCta.label}
             </CTAButton>
           }

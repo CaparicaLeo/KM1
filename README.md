@@ -39,11 +39,13 @@ public/images/      # logo e fotos do evento
 
 ## Pendências de conteúdo
 
-Estão documentadas no topo de `data/event.ts` — em resumo: **data**,
-**distâncias**, **idade mínima por prova** e **valor da inscrição** aguardam
-confirmação da Thomé & Santos. Enquanto isso, a LP não publica nenhum desses
-números como definitivo: os CTAs mandam para a página oficial de inscrição, que
-é a fonte que vale.
+Estão documentadas no topo de `data/event.ts` — em resumo: **data** (01/11/2026)
+e **distâncias** (3 km e 5 km) estão resolvidas; **valor da inscrição** está
+publicado a partir do regulamento oficial (kit básico R$ 69,90, kit plus
+R$ 89,90, + taxas, lote até 23/10/2026); segue em aberto a **idade mínima do
+3 km** (o regulamento se contradiz) e o **comercial das peças** (preço e ponto
+de venda das meias). Enquanto um dado não for confirmado, ele fica `null` e a
+LP cai no estado vazio — nenhum número vira definitivo por conta própria.
 
 ## Deploy
 

@@ -85,8 +85,9 @@ export function SiteHeader() {
             size="md"
             animateIn={false}
             className="hidden sm:inline-flex"
+            trackId="inscricao_header"
           >
-            Inscrição
+            Inscreva-se
           </CTAButton>
 
           <button
@@ -125,6 +126,7 @@ export function SiteHeader() {
             href={registrationCta.href}
             className="mt-5 w-full sm:hidden"
             animateIn={false}
+            trackId="inscricao_menu"
           >
             {registrationCta.label}
           </CTAButton>

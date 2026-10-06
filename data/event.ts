@@ -43,30 +43,28 @@ import type {
  *    do site institucional, que já descrevia esta etapa como 3 km e 5 km.
  *    Fica registrado porque material antigo com "7 km" circula por aí.
  *
- * 3. IDADE MÍNIMA — em aberto, e agora por decisão. O regulamento oficial se
- *    contradiz: o item 1.1 descreve 14 anos de idade para o 3 km e o 8.2 traz
- *    13 anos. A Thomé & Santos não pode revisar uma versão divergente do
- *    documento, e o site não escolhe um dos dois lados: nenhuma idade é
- *    publicada na LP nem no FAQ, e quem mostra o texto ao vivo é a página
- *    /regulamento (ver `regulamentoSource`). O dia em que o documento sair
- *    contradizendo-se, o site também deixa de se contradizer — em uma linha o
- *    `minAge` de cada prova volta a ser publicado.
+ * 3. IDADE MÍNIMA — 5 km RESOLVIDO em 06/10/2026: 16 anos. Os itens 1.1, 8.2
+ *    e a tabela de categorias 10.1 do regulamento batem, e o FAQ publica o
+ *    consenso. O 3 km continua em aberto: o documento ainda se contradiz
+ *    (1.1 e 10.2 dizem 14 anos, 8.2 diz 13) e o site não escolhe um dos dois
+ *    lados — o FAQ explica e manda para /regulamento, que mostra o texto ao
+ *    vivo (ver `regulamentoSource`). No dia em que o documento sair
+ *    contradizendo-se, `minAge` do 3 km volta a ser publicado em uma linha.
  *
  * 4. PRODUTOS OFICIAIS — as peças (camiseta, meias) vieram dos mockups
  *    aprovados no Drive da Thomé & Santos. O moletom saiu da página a pedido
  *    (a arte segue em public/images/produtos/moletom.png). Falta o comercial:
  *    se as meias são vendidas, onde e por quanto. Enquanto `price` e `url`
  *    forem null, os cards mostram a peça e mandam a pessoa para a organização —
- *    nenhum preço e nenhum botão de compra são inventados. A camiseta saiu do
- *    `inKit`: o kit básico do regulamento (5.1) não a inclui — só o kit plus —,
- *    e a nota da seção, não o badge do card, é quem diz isso.
+ *    nenhum preço e nenhum botão de compra são inventados. A camiseta ganhou
+ *    o badge "No kit plus" (o kit básico do regulamento 5.1 não a inclui).
  *
- * 5. VALOR DA INSCRIÇÃO — não publicado na LP, por decisão. O regulamento
- *    oficial traz valores por lote (8.8), mas fixá-los aqui criaria a versão
- *    divergente que a Thomé & Santos não pode revisar se o documento mudar: o
- *    vendedor é a página oficial de inscrição e o texto autoritativo é o
- *    regulamento ao vivo em /regulamento. `price.value` fica null e o estado
- *    vazio aponta para lá.
+ * 5. VALOR DA INSCRIÇÃO — publicado em 06/10/2026, a partir do regulamento
+ *    oficial (itens 5.1 e 8.8), a mesma fonte viva que /regulamento exibe:
+ *    kit básico R$ 69,90 e kit plus R$ 89,90, ambos + taxas, lote de 06/04 a
+ *    23/10/2026, com as 3.000 vagas do item 8.1. O número sai sempre com a
+ *    ressalva de que o valor válido no dia da compra é o da página oficial —
+ *    e se o documento mudar, `kit.price` e o FAQ mudam junto.
  */
 
 export const event = {
@@ -109,13 +107,13 @@ export const event = {
    * página de divulgação do evento (/e/corrida-km-1-...-86470): tira um clique
    * do caminho até o carrinho.
    *
-   * ATENÇÃO (conferido em 09/09/2026): esta URL responde com a tarja
+   * ATENÇÃO (rechecado em 06/10/2026): esta URL ainda devolvia a tarja
    * "Preview para aprovação — as inscrições realizadas nesta página são
    * exclusivamente para testes, sem validade, e serão canceladas
-   * automaticamente". Enquanto esse aviso estiver lá, o link serve para
-   * homologação, não para venda. Confirme com a TicketSports que o evento saiu
-   * do modo preview antes de a LP ir ao ar — ou volte para a página de
-   * divulgação, que é pública.
+   * automaticamente". A organização informou que a inscrição está aprovada
+   * para venda — mas, no mesmo dia, a tarja continuava no ar. Reconfirme a
+   * URL (e a ausência do aviso) com a TicketSports antes do deploy: enquanto
+   * a tarja estiver lá, o link serve para homologação, não para venda.
    */
   registrationUrl:
     "https://site.ticketsports.com.br/Inscricao/categoria.aspx?__idEvento=86470&origem=novo-site&lang=pt-BR",
@@ -217,25 +215,27 @@ function resolveSiteUrl(value: string | undefined) {
 export const siteUrl = resolveSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
 
 /**
- * Descrição canônica: alimenta metadata, Open Graph e JSON-LD. Sem data, pelo
- * motivo do topo do arquivo. Abaixo de 155 caracteres para não ser truncada.
+ * Descrição canônica: alimenta metadata, Open Graph e JSON-LD. O preço entra
+ * aqui porque é o dado que decide o clique na SERP — e é o mesmo de
+ * `kit.price` (regulamento 8.8). Contado: 154 chars com data, 139 sem — o
+ * teto é 155 para não ser truncada.
  */
 export const seoDescription = event.date
-  ? `KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km em ${eventDate.short}, na Praça do Verbo Divino. Organização Thomé & Santos.`
-  : "KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km na Praça do Verbo Divino, organizada pela Thomé & Santos. Inscrição oficial online.";
+  ? `KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km em ${eventDate.short}, a partir de R$ 69,90, na Praça do Verbo Divino. Organização Thomé & Santos.`
+  : "KM1 · Etapa São José dos Pinhais: corrida de rua de 3 km e 5 km na Praça do Verbo Divino, a partir de R$ 69,90. Organização Thomé & Santos.";
 
 /**
  * CTA de inscrição.
  *
- * O rótulo não promete o que não se pode garantir daqui: manda para a página
- * oficial, onde o próprio TicketSports mostra se o lote está aberto, em espera
- * ou esgotado. Quando a Thomé & Santos confirmar que as inscrições estão
- * abertas, este rótulo pode virar "Inscreva-se" — é a única linha a mudar.
+ * "Inscreva-se" porque a venda está liberada (informado pela Thomé & Santos
+ * em 06/10/2026): o botão promete o que a página do TicketSports entrega. Se
+ * o evento voltar para lista de espera ou esgotar, o rótulo volta a ser
+ * genérico — é a única linha a mudar.
  */
 export const registrationCta = {
-  label: "Ir para a inscrição oficial",
+  label: "Inscreva-se",
   href: event.registrationUrl,
-  note: "Você será levado ao TicketSports, onde a Thomé & Santos vende as inscrições.",
+  note: "Você vai para o TicketSports, o canal oficial de inscrição da Thomé & Santos.",
 } satisfies Cta;
 
 /* ---------------------------------------------------------------------------
@@ -311,6 +311,14 @@ export const hero = {
   headline: `${event.name}`,
   subheadline:
     "Uma corrida de rua para quem está começando e para quem corre há anos: 3 km e 5 km saindo da Praça do Verbo Divino, no Centro.",
+  /**
+   * Preço e prazo acima da dobra: é a informação que decide o clique, e ela
+   * não pode esperar a seção do kit. Fonte: regulamento 8.8 (conferido em
+   * 06/10/2026). Cabe numa linha em 390px; se um dia a primeira tela apertar
+   * no notebook de 900px (restrição documentada no clamp do HeroSection),
+   * esta linha é a primeira suspeita — ou cai para a subheadline.
+   */
+  priceNote: "Inscrição a partir de R$ 69,90 + taxas · lote até 23/10/2026",
   scrollHint: "Role para ver as provas",
   marquee: [
     eventDate.short ?? event.dateLabel,
@@ -333,6 +341,32 @@ export const impact = {
   ] satisfies HeadlineLine[],
   support:
     "O primeiro quilômetro é o mais difícil de começar e o único que ninguém esquece. O KM1 existe para ele.",
+};
+
+/* ---------------------------------------------------------------------------
+ * Medalha 3D (ao lado do slide de impacto)
+ * ------------------------------------------------------------------------- */
+
+export const medal = {
+  /**
+   * Modelo final da medalha — ainda NÃO entregue. O arquivo tem de seguir
+   * docs/medalha-3d.md (escala, orientação, peso) para encaixar na cena.
+   */
+  modelUrl: "/models/medalha.glb",
+  /**
+   * `true` enquanto o .glb não existe: a seção mostra a medalha procedural e
+   * nem tenta baixar o arquivo (nada de 404 no console). Com o .glb em
+   * public/models/, troque para `false`. Se o arquivo faltar ou falhar, a cena
+   * volta sozinha para a procedural — a página não quebra.
+   */
+  usePlaceholder: true,
+  /**
+   * Descreve o que está na tela sem prometer a arte oficial: enquanto
+   * `usePlaceholder` for true, a medalha é ilustração da marca, não a medalha
+   * temática da etapa (que a organização ainda não divulgou).
+   */
+  alt: "Ilustração em 3D de uma medalha com a marca KM1. Arraste para os lados ou use as setas para girar.",
+  hint: "Arraste para girar",
 };
 
 /* ---------------------------------------------------------------------------
@@ -376,6 +410,16 @@ export const races = {
   ] satisfies CardItem[],
   /** Repetido embaixo dos cards: é a informação que o atleta mais procura. */
   venueNote: fullAddress,
+  /**
+   * Mapa do percurso no MapMyRun, enviado pela organização em 10/09/2026.
+   * É um link só: o rótulo não diz de qual distância é, porque isso não veio
+   * junto. Chegando um mapa por prova, vire um link em cada card.
+   */
+  route: {
+    label: "Ver o percurso no mapa",
+    href: "https://www.mapmyrun.com/routes/view/6761268721/",
+    ariaLabel: "Ver o percurso no mapa (abre o MapMyRun em nova aba)",
+  },
 };
 
 /* ---------------------------------------------------------------------------
@@ -390,7 +434,7 @@ export const kit = {
       "Itens do kit e da estrutura de prova, conforme o material da Thomé & Santos para a temporada.",
   } satisfies SectionIntro,
   items: [
-    { id: "camiseta", icon: "shirt", label: "Camiseta oficial" },
+    { id: "camiseta", icon: "shirt", label: "Camiseta oficial · só no kit plus" },
     { id: "numero", icon: "bib", label: "Número de peito" },
     { id: "medalha", icon: "medal", label: "Medalha temática" },
     { id: "hidratacao", icon: "water", label: "Hidratação em percurso" },
@@ -402,17 +446,29 @@ export const kit = {
   ] satisfies IconItem[],
 
   /**
-   * Valor da inscrição: estado vazio deliberado (pendência 4). Quando a
-   * Thomé & Santos fechar o valor do lote, preencha `value` (em reais) e o
-   * bloco passa a exibir o número — sem mudar componente.
+   * Valor da inscrição: publicado em 06/10/2026 a partir do regulamento
+   * oficial (5.1 para a composição, 8.8 para os valores), a mesma fonte que a
+   * página /regulamento exibe ao vivo. `decimals: 2` porque o countUp conta
+   * em inteiros por padrão. Se o documento mudar, atualize `value`, `note` e
+   * o FAQ junto — a ressalva da `note` é o que segura a promessa enquanto o
+   * preço se decide no Checkout do TicketSports.
    */
   price: {
-    value: null,
+    value: 69.9,
+    decimals: 2,
     prefix: "R$ ",
-    caption: "Valor da inscrição",
+    caption: "Valor da inscrição · kit básico",
+    note: "Número de peito, chip de cronometragem, hidratação e medalha. O kit plus (R$ 89,90) acrescenta a camiseta oficial. Valor mais as taxas, no lote de 06/04 a 23/10/2026 — pode encerrar antes se atingir as 3.000 vagas. O que vale no dia da compra é o da página de inscrição, e a composição completa está no regulamento oficial.",
     emptyState:
       "O valor por lote é o do regulamento oficial da etapa, publicado na íntegra aqui no site — é de lá que sai o preço válido no dia da compra.",
   } satisfies BigNumber,
+
+  /**
+   * Valor do kit plus (regulamento 8.8, mesma conferência do básico). Vai para
+   * o JSON-LD como dado; a copy (FAQ, CTA final) usa o literal ao lado.
+   * `null` tira o kit plus do `offers` junto — ver EventJsonLd.
+   */
+  plusPrice: 89.9 as number | null,
 };
 
 /* ---------------------------------------------------------------------------
@@ -469,7 +525,7 @@ export const products = {
       },
       price: null,
       url: null,
-      inKit: false,
+      badge: "No kit plus",
     },
     {
       id: "meia-amarela",
@@ -519,22 +575,22 @@ export const faq = {
   } satisfies SectionIntro,
   items: [
     {
-      id: "idade",
-      question: "Qual é a idade mínima de cada prova?",
+      id: "valor",
+      question: "Quanto custa a inscrição?",
       answer:
-        "A idade mínima varia entre as duas distâncias e está no regulamento oficial da etapa, publicado na íntegra aqui no site. Confira /regulamento antes de inscrever um atleta menor de idade — é o documento que vale no dia da prova.",
+        "São dois kits: o básico por R$ 69,90 e o plus por R$ 89,90, ambos mais as taxas da plataforma. O básico traz número de peito, chip de cronometragem, hidratação e medalha; o plus acrescenta a camiseta oficial. O lote vale de 06/04 a 23/10/2026 e pode encerrar antes se as 3.000 vagas esgotarem. O valor que vale no dia da compra é o da página oficial de inscrição.",
     },
     {
       id: "kit",
       question: "O que vem no kit do atleta?",
       answer:
-        "O kit varia conforme o lote: o básico traz número de peito, chip de cronometragem, hidratação e medalha; o plus acrescenta a camiseta oficial. A composição exata de cada lote está no regulamento oficial da etapa, publicado na íntegra aqui no site — e o que for vendido é o que a página de inscrição descreve.",
+        "O kit varia conforme a opção escolhida na inscrição: o básico traz número de peito, chip de cronometragem, hidratação e medalha; o plus acrescenta a camiseta oficial. A composição exata está no regulamento oficial da etapa, publicado na íntegra aqui no site — e o que for vendido é o que a página de inscrição descreve.",
     },
     {
-      id: "vagas",
-      question: "Como funciona a reposição de vagas?",
+      id: "retirada",
+      question: "Onde retiro o kit?",
       answer:
-        "Transferência de titularidade, troca de distância e reposição de vagas seguem os prazos e as condições do regulamento oficial da etapa, publicado na íntegra aqui no site. Como a inscrição é vendida pelo TicketSports, cancelamentos e devoluções seguem a política informada no ato da compra.",
+        "Curitiba: 30/10/2026, das 10h às 17h, na Loja ProCorrer (Av. Vicente Machado, 318, Centro). São José dos Pinhais: 31/10/2026, das 10h às 16h, com o local a definir pela organização. Não há retirada de kit no dia da prova — datas e locais são os do regulamento oficial.",
     },
     {
       id: "data",
@@ -554,6 +610,18 @@ export const faq = {
       answer:
         "Dá: os 3 km são abertos à caminhada. É a distância pensada para quem está começando ou vem com a família, no mesmo percurso e com a mesma estrutura de quem corre.",
     },
+    {
+      id: "idade",
+      question: "Qual é a idade mínima de cada prova?",
+      answer:
+        "O 5 km é a partir de 16 anos — os itens 1.1, 8.2 e a tabela de categorias do regulamento batem. Para o 3 km o próprio documento se contradiz (o item 1.1 diz 14 anos, o 8.2 diz 13), então quem escolhe é o texto ao vivo: confira /regulamento antes de inscrever um atleta menor de idade.",
+    },
+    {
+      id: "vagas",
+      question: "Como funciona a reposição de vagas?",
+      answer:
+        "Transferência de titularidade, troca de distância e reposição de vagas seguem os prazos e as condições do regulamento oficial da etapa, publicado na íntegra aqui no site. Como a inscrição é vendida pelo TicketSports, cancelamentos e devoluções seguem a política informada no ato da compra.",
+    },
   ] satisfies FaqItem[],
 };
 
@@ -568,7 +636,7 @@ export const finalCta = {
     [{ text: "km 1.", accent: true }],
   ] satisfies HeadlineLine[],
   description:
-    "As inscrições da Etapa São José dos Pinhais são vendidas na página oficial do evento. Lotes e valores estão lá — e o regulamento completo, publicado na íntegra aqui no site, é o que vale no dia da prova.",
+    "Na página oficial você escolhe o kit e finaliza: R$ 69,90 no kit básico e R$ 89,90 no kit plus, mais as taxas, no lote que vai até 23/10/2026. O regulamento completo, publicado na íntegra aqui no site, é o que vale no dia da prova.",
 };
 
 /* ---------------------------------------------------------------------------

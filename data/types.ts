@@ -78,6 +78,8 @@ export type BigNumber = {
   value: number | null;
   prefix?: string;
   suffix?: string;
+  /** Casas decimais na tela e na contagem — preço em reais usa 2. */
+  decimals?: number;
   caption: string;
   note?: string;
   /** Texto exibido quando `value` é null. */
@@ -106,6 +108,8 @@ export type Product = {
   price: number | null;
   url: string | null;
   inKit?: boolean;
+  /** Etiqueta própria do card (ex.: "No kit plus") — tem prioridade sobre `inKit`. */
+  badge?: string;
 };
 
 export type NavItem = { label: string; href: string };

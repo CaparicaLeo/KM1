@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -7,7 +8,7 @@ import { useGsapScroll } from "@/lib/hooks/useGsapScroll";
 import { cn } from "@/lib/cn";
 
 type Variant = "primary" | "outline";
-type Size = "md" | "lg";
+type Size = "md" | "lg" | "xl";
 
 const variantClasses: Record<Variant, string> = {
   /** Único lugar em que o amarelo vira área sólida grande. */
@@ -18,6 +19,12 @@ const variantClasses: Record<Variant, string> = {
 const sizeClasses: Record<Size, string> = {
   md: "px-6 py-3.5 text-xs",
   lg: "px-8 py-4.5 text-sm",
+  /**
+   * Botão-destino de uma seção inteira (ex.: mapa do percurso). No celular
+   * volta ao corpo do `lg`: em 390px, text-base com o tracking do label
+   * quebrava "VER O PERCURSO NO MAPA" em duas linhas.
+   */
+  xl: "px-8 py-5 text-sm sm:px-12 sm:py-6 sm:text-base",
 };
 
 export type CTAButtonProps = {
@@ -32,6 +39,12 @@ export type CTAButtonProps = {
   /** Entrada animada ao entrar no viewport. */
   animateIn?: boolean;
   ariaLabel?: string;
+  /**
+   * Envia `track("cta_click", { id })` no clique. Só os CTAs que importam para
+   * o funil levam identificador — medir clique é como se descobre em qual
+   * botão as pessoas desistem de chegar no TicketSports.
+   */
+  trackId?: string;
 };
 
 /**
@@ -51,6 +64,7 @@ export function CTAButton({
   pulse = false,
   animateIn = true,
   ariaLabel,
+  trackId,
 }: CTAButtonProps) {
   const root = useGsapScroll<HTMLDivElement>(
     ({ scope, prefersReducedMotion, gsap: g }) => {
@@ -133,6 +147,9 @@ export function CTAButton({
         aria-label={ariaLabel}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noopener noreferrer" : undefined}
+        onClick={
+          trackId ? () => track("cta_click", { id: trackId }) : undefined
+        }
         className="relative inline-flex w-full focus-visible:outline-offset-4"
       >
         {variant === "primary" ? (
