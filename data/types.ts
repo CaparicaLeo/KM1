@@ -57,6 +57,19 @@ export type CardItem = {
   description?: string;
   meta?: string[];
   featured?: boolean;
+  /** Mapa do percurso daquela prova: arte + link para o traçado interativo. */
+  route?: RouteMap;
+};
+
+/**
+ * Percurso de uma prova. A arte é a peça oficial (mapa + altimetria); o `href`
+ * leva ao traçado no MapMyRun, que é onde o atleta dá zoom e baixa o GPX.
+ */
+export type RouteMap = {
+  media: Media;
+  href: string;
+  label: string;
+  ariaLabel: string;
 };
 
 /** Mini-KPI da fileira abaixo do número grande. */

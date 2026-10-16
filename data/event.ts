@@ -388,6 +388,17 @@ export const races = {
       description:
         "A distância de quem está estreando, de quem vem em família e de quem prefere caminhar o percurso inteiro.",
       meta: ["Aberta a caminhada", "Percurso no Centro"],
+      route: {
+        media: {
+          src: "/images/percurso/percurso-3km.png",
+          alt: "Mapa do percurso de 3 km no Centro de São José dos Pinhais, passando pela Praça do Verbo Divino, com largada às 7h e gráfico de elevação entre 884 e 910 metros.",
+          width: 1080,
+          height: 1350,
+        },
+        href: "https://www.mapmyrun.com/routes/view/6761272814/",
+        label: "Ver o percurso de 3 km",
+        ariaLabel: "Ver o percurso de 3 km no mapa (abre o MapMyRun em nova aba)",
+      },
     },
     {
       id: "5km",
@@ -399,20 +410,28 @@ export const races = {
         "A prova principal da etapa, para quem já treina e quer fechar o percurso no ritmo.",
       meta: ["Cronometragem oficial", "Percurso no Centro"],
       featured: true,
+      route: {
+        media: {
+          src: "/images/percurso/percurso-5km.png",
+          alt: "Mapa do percurso de 5 km entre o Centro e o bairro São Domingos, em São José dos Pinhais, com largada às 7h e gráfico de elevação entre 878 e 912 metros.",
+          width: 1080,
+          height: 1350,
+        },
+        href: "https://www.mapmyrun.com/routes/view/6761268721/",
+        label: "Ver o percurso de 5 km",
+        ariaLabel: "Ver o percurso de 5 km no mapa (abre o MapMyRun em nova aba)",
+      },
     },
   ] satisfies CardItem[],
   /** Repetido embaixo dos cards: é a informação que o atleta mais procura. */
   venueNote: fullAddress,
-  /**
-   * Mapa do percurso no MapMyRun, enviado pela organização em 10/09/2026.
-   * É um link só: o rótulo não diz de qual distância é, porque isso não veio
-   * junto. Chegando um mapa por prova, vire um link em cada card.
+  /*
+   * Percursos: artes e links do MapMyRun enviados pela organização em
+   * 16/10/2026, um por prova (ficam em `items[].route`). A distância de cada
+   * link foi conferida no próprio MapMyRun — 6761272814 tem 3,1 km e
+   * 6761268721 tem 5,0 km. O 6761268721 é o link único publicado desde
+   * 10/09/2026, que portanto sempre foi o do 5 km.
    */
-  route: {
-    label: "Ver o percurso no mapa",
-    href: "https://www.mapmyrun.com/routes/view/6761268721/",
-    ariaLabel: "Ver o percurso no mapa (abre o MapMyRun em nova aba)",
-  },
 };
 
 /* ---------------------------------------------------------------------------

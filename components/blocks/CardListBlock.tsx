@@ -1,7 +1,11 @@
 "use client";
 
+import { track } from "@vercel/analytics";
+
+import { CTAButton } from "@/components/ui/CTAButton";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Icon } from "@/components/ui/Icon";
+import { Media } from "@/components/ui/Media";
 import { staggerIn } from "@/lib/animations/presets";
 import { useGsapScroll } from "@/lib/hooks/useGsapScroll";
 import { cn } from "@/lib/cn";
@@ -78,6 +82,38 @@ export function CardListBlock({
                 </li>
               ))}
             </ul>
+          ) : null}
+
+          {item.route ? (
+            <div className="flex flex-col gap-4">
+              {/* A arte também é link: no celular é nela que o dedo vai. Fica
+                  fora do tab order porque o botão logo abaixo leva ao mesmo
+                  lugar — dois focos seguidos para o mesmo destino só cansam. */}
+              <a
+                href={item.route.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                tabIndex={-1}
+                onClick={() =>
+                  track("cta_click", { id: `mapa_percurso_${item.id}` })
+                }
+                className="block border border-white/10 transition-opacity hover:opacity-90"
+              >
+                <Media media={item.route.media} sizes="(min-width: 1024px) 40vw, 90vw" />
+              </a>
+              {/* Amarelo a pedido: o mapa é o que o atleta mais procura aqui.
+                  Sem `pulse`, que segue reservado à inscrição; sem entrada
+                  própria, que o card já anima (um reveal por dono). */}
+              <CTAButton
+                href={item.route.href}
+                className="w-full"
+                animateIn={false}
+                ariaLabel={item.route.ariaLabel}
+                trackId={`mapa_percurso_${item.id}`}
+              >
+                {item.route.label}
+              </CTAButton>
+            </div>
           ) : null}
         </article>
       ))}
